@@ -104,18 +104,21 @@ Este projeto foi desenvolvido com foco em colocar em prática conceitos modernos
 
 ---
 
-# 🚀 Executando o projeto
+## 🚀 Executando o projeto
 
 ```bash
+# Clone o repositório
 git clone https://github.com/KainaFerreira/BarberControl-Finance.git
 
+# Entre na pasta do projeto
 cd BarberControl-Finance
 
+# Instale as dependências
 npm install
 
+# Inicie o servidor de desenvolvimento
 npm run dev
 ```
-
 ---
 
 # 📚 Aprendizados

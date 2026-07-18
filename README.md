@@ -6,33 +6,49 @@
   />
 </p>
 
-# 💈 BarberControl Finance
+<h1 align="center">
+💈 BarberControl Finance
+</h1>
 
 <p align="center">
-  Sistema de gestão para barbearias desenvolvido com React.
+Sistema de gestão para barbearias desenvolvido com React.
 </p>
 
 <p align="center">
-  Controle de clientes • Atendimentos • Fidelidade • Fiados • Dashboard
+Controle de clientes • Atendimentos • Fidelidade • Fiados • Dashboard
+</p>
+
+<p align="center">
+
+<img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white"/>
+
+<img src="https://img.shields.io/badge/Vite-Latest-646CFF?logo=vite&logoColor=white"/>
+
+<img src="https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black"/>
+
+<img src="https://img.shields.io/badge/Status-Em%20Desenvolvimento-red"/>
+
 </p>
 
 ---
 
-## 📸 Preview
+# 📖 Sobre o projeto
 
-> *(Adicione aqui um print da Dashboard do sistema.)*
-
-![Dashboard](./public/readme/dashboard.png)
-
----
-
-## 📖 Sobre o projeto
-
-O **BarberControl Finance** é um sistema desenvolvido para facilitar a gestão de pequenas barbearias.
+O **BarberControl Finance** é um sistema desenvolvido para auxiliar pequenas barbearias na gestão dos atendimentos e do controle financeiro.
 
 A aplicação permite registrar atendimentos, acompanhar o faturamento, controlar pagamentos pendentes (fiados), gerenciar clientes automaticamente e oferecer um programa de fidelidade baseado na quantidade de cortes realizados.
 
-Este projeto foi desenvolvido com foco em colocar em prática conceitos modernos de desenvolvimento Front-end utilizando React e organização de componentes.
+Este projeto foi desenvolvido com o objetivo de colocar em prática conceitos modernos de desenvolvimento Front-end utilizando React, componentização, gerenciamento de estado e organização de aplicações.
+
+Embora atualmente utilize **LocalStorage** para persistência dos dados, sua arquitetura foi planejada para evoluir futuramente para uma solução com autenticação de usuários e banco de dados.
+
+---
+
+# 🌎 Demonstração
+
+### 🚀 Acesse o sistema online
+
+🔗 https://barbercontrolfinance.netlify.app/
 
 ---
 
@@ -40,7 +56,7 @@ Este projeto foi desenvolvido com foco em colocar em prática conceitos modernos
 
 - ✅ Dashboard com indicadores financeiros
 - ✅ Cadastro de atendimentos
-- ✅ Histórico completo dos serviços realizados
+- ✅ Histórico completo dos serviços
 - ✅ Cadastro automático de clientes
 - ✅ Pesquisa de clientes
 - ✅ Programa de fidelidade
@@ -50,9 +66,9 @@ Este projeto foi desenvolvido com foco em colocar em prática conceitos modernos
 
 ---
 
-# 🛠 Tecnologias
+# 🛠 Tecnologias utilizadas
 
-<p>
+<p align="center">
 
 <img src="https://skillicons.dev/icons?i=react" height="45"/>
 
@@ -66,41 +82,47 @@ Este projeto foi desenvolvido com foco em colocar em prática conceitos modernos
 
 </p>
 
+<p align="center">
+
+React • JavaScript • Vite • Git • GitHub • LocalStorage
+
+</p>
+
 ---
 
-# 📷 Telas do Sistema
+# 📷 Telas do sistema
 
-## Dashboard
+## 📊 Dashboard
 
 ![Dashboard](./public/readme/dashboard.png)
 
 ---
 
-## Novo Atendimento
+## ✂️ Novo Atendimento
 
 ![Novo Atendimento](./public/readme/novo.png)
 
 ---
 
-## Histórico
+## 📜 Histórico
 
 ![Histórico](./public/readme/historico.png)
 
 ---
 
-## Clientes
+## 👤 Clientes
 
 ![Clientes](./public/readme/clientes.png)
 
 ---
 
-## Fidelidade
+## 🎁 Fidelidade
 
 ![Fidelidade](./public/readme/fidelidade.png)
 
 ---
 
-## Fiados
+## 💳 Controle de Fiados
 
 ![Fiados](./public/readme/fiados.png)
 
@@ -109,12 +131,16 @@ Este projeto foi desenvolvido com foco em colocar em prática conceitos modernos
 # 🚀 Executando o projeto
 
 ```bash
+# Clone o repositório
 git clone https://github.com/KainaFerreira/BarberControl-Finance.git
 
+# Entre na pasta do projeto
 cd BarberControl-Finance
 
+# Instale as dependências
 npm install
 
+# Inicie o servidor de desenvolvimento
 npm run dev
 ```
 
@@ -132,27 +158,20 @@ Durante o desenvolvimento deste projeto foram praticados diversos conceitos impo
 - Estruturação de aplicações React
 - Criação de regras de negócio
 - Boas práticas de desenvolvimento Front-end
+- Desenvolvimento de interfaces responsivas
 
 ---
 
 # 🔮 Próximas melhorias
 
 - 🔐 Autenticação de usuários
-- ☁️ Firebase
+- ☁️ Integração com Firebase
 - 🗄 Banco de Dados
-- 👥 Multiusuário
-- 📅 Agendamento Online
+- 👥 Controle de usuários
 - 📊 Relatórios Financeiros
-- 💾 Backup automático
+- 📅 Agendamento Online
 - 📱 Versão Mobile
-
----
-
-# 🌎 Demonstração
-
-### 🔗 Sistema Online
-
-https://barbercontrolfinance.netlify.app/
+- 💾 Backup automático
 
 ---
 
@@ -160,9 +179,9 @@ https://barbercontrolfinance.netlify.app/
 
 Desenvolvido por **Kainã Ferreira**
 
-📫 Em busca da primeira oportunidade como Desenvolvedor Front-end.
+🎯 Desenvolvedor Front-end em evolução, apaixonado por tecnologia e por criar soluções para problemas reais.
 
-Caso tenha sugestões ou queira conversar sobre o projeto, fique à vontade para entrar em contato.
+Atualmente em busca da primeira oportunidade profissional na área de desenvolvimento.
 
 ---
 
@@ -170,6 +189,8 @@ Caso tenha sugestões ou queira conversar sobre o projeto, fique à vontade para
 
 ### ⭐ Gostou do projeto?
 
-Se este projeto foi útil ou interessante para você, considere deixar uma ⭐ no repositório.
+Se este projeto foi interessante para você, considere deixar uma ⭐ no repositório.
+
+Muito obrigado pela visita!
 
 </div>

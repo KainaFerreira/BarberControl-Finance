@@ -34,7 +34,17 @@ Controle de clientes • Atendimentos • Fidelidade • Fiados • Dashboard
 
 # 📖 Sobre o projeto
 
+<<<<<<< HEAD
 O **BarberControl Finance** é um sistema desenvolvido para auxiliar pequenas barbearias na gestão dos atendimentos e do controle financeiro.
+=======
+![Dashboard](./public/readme/dashboard.png)
+
+---
+
+## 📖 Sobre o projeto
+
+O **BarberControl Finance** é um sistema desenvolvido para facilitar a gestão de pequenas barbearias.
+>>>>>>> e250cbb4af5df6a0de3ea9a62fddb667ff9d7151
 
 A aplicação permite registrar atendimentos, acompanhar o faturamento, controlar pagamentos pendentes (fiados), gerenciar clientes automaticamente e oferecer um programa de fidelidade baseado na quantidade de cortes realizados.
 
@@ -128,7 +138,7 @@ React • JavaScript • Vite • Git • GitHub • LocalStorage
 
 ---
 
-# 🚀 Executando o projeto
+## 🚀 Executando o projeto
 
 ```bash
 # Clone o repositório
@@ -143,7 +153,6 @@ npm install
 # Inicie o servidor de desenvolvimento
 npm run dev
 ```
-
 ---
 
 # 📚 Aprendizados

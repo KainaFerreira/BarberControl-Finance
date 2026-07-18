@@ -20,8 +20,6 @@
 
 ## 📸 Preview
 
-> *(Adicione aqui um print da Dashboard do sistema.)*
-
 ![Dashboard](./public/readme/dashboard.png)
 
 ---

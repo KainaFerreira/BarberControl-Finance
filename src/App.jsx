@@ -8,6 +8,7 @@ import Loyalty from '../src/pages/Loyalty'
 import Debts from '../src/pages/Debts'
 import Login from './pages/Login'
 import Expenses from './pages/Expenses'
+import Finance from './pages/Finance'
 
 import { useLocalStorage } from './hooks/useLocalStorage'
 import {
@@ -201,6 +202,13 @@ function App() {
             <Expenses
               saidas={saidas}
               registrarSaida={registrarSaida}
+            />
+          )}
+
+          {telaAtual === 'financeiro' && (
+            <Finance
+              atendimentos={atendimentos}
+              saidas={saidas}
             />
           )}
         </main>

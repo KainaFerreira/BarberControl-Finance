@@ -7,12 +7,14 @@ import Clients from '../src/pages/Clients'
 import Loyalty from '../src/pages/Loyalty'
 import Debts from '../src/pages/Debts'
 import Login from './pages/Login'
+import Expenses from './pages/Expenses'
 
 import { useLocalStorage } from './hooks/useLocalStorage'
 import {
   atendimentosIniciais,
   beneficiosUsadosIniciais,
   clientesIniciais,
+  saidasIniciais,
 } from './data/initialData'
 
 function App() {
@@ -34,6 +36,11 @@ function App() {
     clientesIniciais
   )
 
+  const [saidas, setSaidas] = useLocalStorage(
+    'barbercontrol_saidas',
+    saidasIniciais
+  )
+
   function cadastrarClienteAutomatico(nomeCliente) {
     const nomeLimpo = nomeCliente.trim()
 
@@ -53,6 +60,7 @@ function App() {
       dataNascimento: '',
       observacao: '',
       dataCadastro: new Date().toLocaleDateString('pt-BR'),
+      dataInicioFidelidade: null,
     }
 
     setClientes([novoCliente, ...clientes])
@@ -65,18 +73,33 @@ function App() {
     setTelaAtual('painel')
   }
 
+  function registrarSaida(novaSaida) {
+    setSaidas([novaSaida, ...saidas])
+  }
+
   function editarCliente(clienteAtualizado) {
     const clientesAtualizados = clientes.map((cliente) => {
-      if (cliente.id === clienteAtualizado.id) {
-        return clienteAtualizado
+      if (cliente.id !== clienteAtualizado.id) {
+        return cliente
       }
 
-      return cliente
+      const clienteNaoTinhaCpf = !cliente.cpf || cliente.cpf.trim() === ''
+      const clienteAgoraTemCpf =
+        clienteAtualizado.cpf && clienteAtualizado.cpf.trim() !== ''
+
+      const deveIniciarFidelidade =
+        clienteNaoTinhaCpf && clienteAgoraTemCpf
+
+      return {
+        ...clienteAtualizado,
+        dataInicioFidelidade: deveIniciarFidelidade
+          ? new Date().toISOString()
+          : cliente.dataInicioFidelidade || clienteAtualizado.dataInicioFidelidade || null,
+      }
     })
 
     setClientes(clientesAtualizados)
   }
-
   function excluirCliente(idCliente) {
     const clientesAtualizados = clientes.filter((cliente) => {
       return cliente.id !== idCliente
@@ -134,6 +157,7 @@ function App() {
               atendimentos={atendimentos}
               beneficiosUsados={beneficiosUsados}
               clientes={clientes}
+              saidas={saidas}
             />
           )}
 
@@ -170,6 +194,13 @@ function App() {
             <Debts
               atendimentos={atendimentos}
               marcarFiadoComoPago={marcarFiadoComoPago}
+            />
+          )}
+
+          {telaAtual === 'saidas' && (
+            <Expenses
+              saidas={saidas}
+              registrarSaida={registrarSaida}
             />
           )}
         </main>

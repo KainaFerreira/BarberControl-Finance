@@ -12,6 +12,7 @@ function Dashboard({
   atendimentos,
   beneficiosUsados,
   clientes,
+  saidas,
 }) {
 
   const [mostrarValores, setMostrarValores] = useState(false)
@@ -50,6 +51,20 @@ function Dashboard({
     .reduce((total, item) => {
       return total + item.valor
     }, 0)
+
+  const saidasMes = saidas
+    .filter((saida) => {
+      const partes = saida.data.split('/')
+      const mes = Number(partes[1]) - 1
+      const ano = Number(partes[2])
+
+      return mes === mesAtual && ano === anoAtual
+    })
+    .reduce((total, saida) => {
+      return total + Number(saida.valor || 0)
+    }, 0)
+
+  const lucroMes = entradasMes - saidasMes
 
   const clientesUnicos = [...new Set(atendimentos.map((item) => item.cliente))]
 
@@ -94,7 +109,7 @@ function Dashboard({
         </div>
       </header>
 
-      <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+      <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
         <Card
           titulo="Entradas hoje"
           valor={
@@ -116,6 +131,29 @@ function Dashboard({
             />
           }
           detalhe="Somente pagamentos recebidos"
+        />
+
+        <Card
+          titulo="Saídas no mês"
+          valor={
+            <PrivateValue
+              value={formatCurrency(saidasMes)}
+              show={mostrarValores}
+            />
+          }
+          detalhe="Gastos registrados"
+        />
+
+        <Card
+          titulo="Lucro do mês"
+          valor={
+            <PrivateValue
+              value={formatCurrency(lucroMes)}
+              show={mostrarValores}
+            />
+          }
+          detalhe="Entradas menos saídas"
+          destaque
         />
 
         <Card

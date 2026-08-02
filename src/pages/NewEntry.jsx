@@ -42,6 +42,7 @@ function NewEntry({ registrarAtendimento, clientes }) {
       statusPagamento,
       data,
       hora,
+      criadoEm: agora.toISOString(),
     }
 
     registrarAtendimento(novoAtendimento)

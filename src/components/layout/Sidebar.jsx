@@ -34,6 +34,7 @@ function Sidebar({ telaAtual, setTelaAtual, setLogado }) {
         <BotaoMenu nome="Clientes" tela="clientes" />
         <BotaoMenu nome="Fidelidade" tela="fidelidade" />
         <BotaoMenu nome="Fiado" tela="fiado" />
+        <BotaoMenu nome="Saídas" tela="saidas" />
       </nav>
       <button
         onClick={() => setLogado(false)}

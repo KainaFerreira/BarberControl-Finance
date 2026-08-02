@@ -1,4 +1,7 @@
+import { useState } from 'react'
+
 import Card from '../components/ui/Card'
+import PrivateValue from '../components/ui/PrivateValue'
 import LastEntries from '../components/dashboard/LastEntries'
 import LoyaltyPreview from '../components/dashboard/LoyaltyPreview'
 import { calcularFidelidade } from '../services/loyaltyService'
@@ -11,6 +14,7 @@ function Dashboard({
   clientes,
 }) {
 
+  const [mostrarValores, setMostrarValores] = useState(false)
   const hoje = new Date().toLocaleDateString('pt-BR')
   const mesAtual = new Date().getMonth()
   const anoAtual = new Date().getFullYear()
@@ -73,31 +77,55 @@ function Dashboard({
           </p>
         </div>
 
-        <button
-          onClick={() => setTelaAtual('novo')}
-          className="rounded-xl bg-red-600 px-5 py-3 font-semibold text-white hover:bg-red-700"
-        >
-          + Novo
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={() => setMostrarValores(!mostrarValores)}
+            className="rounded-xl border border-zinc-700 px-5 py-3 font-semibold text-zinc-300 hover:border-red-600 hover:text-white"
+          >
+            {mostrarValores ? 'Ocultar valores' : 'Mostrar valores'}
+          </button>
+
+          <button
+            onClick={() => setTelaAtual('novo')}
+            className="rounded-xl bg-red-600 px-5 py-3 font-semibold text-white hover:bg-red-700"
+          >
+            + Novo
+          </button>
+        </div>
       </header>
 
       <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
         <Card
           titulo="Entradas hoje"
-          valor={formatCurrency(entradasHoje)}
+          valor={
+            <PrivateValue
+              value={formatCurrency(entradasHoje)}
+              show={mostrarValores}
+            />
+          }
           detalhe={`${atendimentosPagosHoje.length} atendimento(s) pago(s)`}
           destaque
         />
 
         <Card
           titulo="Entradas no mês"
-          valor={formatCurrency(entradasMes)}
+          valor={
+            <PrivateValue
+              value={formatCurrency(entradasMes)}
+              show={mostrarValores}
+            />
+          }
           detalhe="Somente pagamentos recebidos"
         />
 
         <Card
           titulo="Fiado em aberto"
-          valor={formatCurrency(totalFiadoEmAberto)}
+          valor={
+            <PrivateValue
+              value={formatCurrency(totalFiadoEmAberto)}
+              show={mostrarValores}
+            />
+          }
           detalhe={`${fiadosEmAberto.length} pagamento(s) pendente(s)`}
         />
 

@@ -9,6 +9,7 @@ import Debts from '../src/pages/Debts'
 import Login from './pages/Login'
 import Expenses from './pages/Expenses'
 import Finance from './pages/Finance'
+import Analytics from './pages/Analytics'
 
 import { useLocalStorage } from './hooks/useLocalStorage'
 import {
@@ -207,6 +208,13 @@ function App() {
 
           {telaAtual === 'financeiro' && (
             <Finance
+              atendimentos={atendimentos}
+              saidas={saidas}
+            />
+          )}
+
+          {telaAtual === 'analytics' && (
+            <Analytics
               atendimentos={atendimentos}
               saidas={saidas}
             />

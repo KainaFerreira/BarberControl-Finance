@@ -10,6 +10,7 @@ import Login from './pages/Login'
 import Expenses from './pages/Expenses'
 import Finance from './pages/Finance'
 import Analytics from './pages/Analytics'
+import Plan from './pages/Plan'
 
 import { useLocalStorage } from './hooks/useLocalStorage'
 import {
@@ -219,6 +220,8 @@ function App() {
               saidas={saidas}
             />
           )}
+
+          {telaAtual === 'plano' && <Plan />}
         </main>
       </div>
     </div>

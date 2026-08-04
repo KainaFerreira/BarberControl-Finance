@@ -14,14 +14,6 @@ import Finance from './pages/Finance'
 import Analytics from './pages/Analytics'
 import Plan from './pages/Plan'
 
-import { useLocalStorage } from './hooks/useLocalStorage'
-import {
-  atendimentosIniciais,
-  beneficiosUsadosIniciais,
-  clientesIniciais,
-  saidasIniciais,
-} from './data/initialData'
-
 import {
   buscarClientes,
   criarCliente,

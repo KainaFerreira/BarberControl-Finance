@@ -22,32 +22,48 @@ import {
   saidasIniciais,
 } from './data/initialData'
 
+import {
+  buscarClientes,
+  criarCliente,
+  atualizarCliente,
+  deletarCliente,
+} from './services/clientsService'
+
+import {
+  buscarAtendimentos,
+  criarAtendimento,
+  atualizarStatusAtendimento,
+} from './services/appointmentsService'
+
+import {
+  buscarSaidas,
+  criarSaida,
+} from './services/expensesService'
+
 function App() {
   const [telaAtual, setTelaAtual] = useState('painel')
   const [logado, setLogado] = useState(false)
   const [carregandoLogin, setCarregandoLogin] = useState(true)
 
-  const [atendimentos, setAtendimentos] = useLocalStorage(
-    'barbercontrol_atendimentos',
-    atendimentosIniciais
-  )
+  const [profile, setProfile] = useState(null)
+  const [barbershopId, setBarbershopId] = useState(null)
+
+
+  const [atendimentos, setAtendimentos] = useState([])
+  const [carregandoAtendimentos, setCarregandoAtendimentos] = useState(false)
 
   const [beneficiosUsados, setBeneficiosUsados] = useLocalStorage(
     'barbercontrol_beneficios_usados',
     beneficiosUsadosIniciais
   )
 
-  const [clientes, setClientes] = useLocalStorage(
-    'barbercontrol_clientes',
-    clientesIniciais
-  )
+  const [clientes, setClientes] = useState([])
+  const [carregandoClientes, setCarregandoClientes] = useState(false)
 
-  const [saidas, setSaidas] = useLocalStorage(
-    'barbercontrol_saidas',
-    saidasIniciais
-  )
+  const [saidas, setSaidas] = useState([])
+  const [carregandoSaidas, setCarregandoSaidas] = useState(false)
 
-  function cadastrarClienteAutomatico(nomeCliente) {
+  async function cadastrarClienteAutomatico(nomeCliente) {
     const nomeLimpo = nomeCliente.trim()
 
     const clienteJaExiste = clientes.some((cliente) => {
@@ -59,31 +75,68 @@ function App() {
     }
 
     const novoCliente = {
-      id: Date.now(),
       nome: nomeLimpo,
       telefone: '',
       cpf: '',
       dataNascimento: '',
       observacao: '',
-      dataCadastro: new Date().toLocaleDateString('pt-BR'),
       dataInicioFidelidade: null,
     }
 
-    setClientes([novoCliente, ...clientes])
+    const clienteCriado = await criarCliente(barbershopId, novoCliente)
+
+    setClientes((clientesAtuais) => [clienteCriado, ...clientesAtuais])
   }
 
-  function registrarAtendimento(novoAtendimento) {
-    cadastrarClienteAutomatico(novoAtendimento.cliente)
+  async function registrarAtendimento(novoAtendimento) {
+    const nomeCliente = novoAtendimento.cliente.trim()
 
-    setAtendimentos([novoAtendimento, ...atendimentos])
+    let clienteEncontrado = clientes.find((cliente) => {
+      return cliente.nome.toLowerCase() === nomeCliente.toLowerCase()
+    })
+
+    if (!clienteEncontrado) {
+      const novoCliente = {
+        nome: nomeCliente,
+        telefone: '',
+        cpf: '',
+        dataNascimento: '',
+        observacao: '',
+        dataInicioFidelidade: null,
+      }
+
+      clienteEncontrado = await criarCliente(barbershopId, novoCliente)
+
+      setClientes((clientesAtuais) => [
+        clienteEncontrado,
+        ...clientesAtuais,
+      ])
+    }
+
+    const atendimentoCriado = await criarAtendimento(
+      barbershopId,
+      novoAtendimento,
+      clienteEncontrado.id
+    )
+
+    setAtendimentos((atendimentosAtuais) => [
+      atendimentoCriado,
+      ...atendimentosAtuais,
+    ])
+
     setTelaAtual('painel')
   }
 
-  function registrarSaida(novaSaida) {
-    setSaidas([novaSaida, ...saidas])
+  async function registrarSaida(novaSaida) {
+    const saidaCriada = await criarSaida(barbershopId, novaSaida)
+
+    setSaidas((saidasAtuais) => [
+      saidaCriada,
+      ...saidasAtuais,
+    ])
   }
 
-  function editarCliente(clienteAtualizado) {
+  async function editarCliente(clienteAtualizado) {
     const clientesAtualizados = clientes.map((cliente) => {
       if (cliente.id !== clienteAtualizado.id) {
         return cliente
@@ -102,15 +155,23 @@ function App() {
         dataInicioFidelidade: deveIniciarFidelidade
           ? new Date().toISOString()
           : cliente.dataInicioFidelidade ||
-            clienteAtualizado.dataInicioFidelidade ||
-            null,
+          clienteAtualizado.dataInicioFidelidade ||
+          null,
       }
     })
+
+    const clienteFinal = clientesAtualizados.find((cliente) => {
+      return cliente.id === clienteAtualizado.id
+    })
+
+    await atualizarCliente(clienteFinal)
 
     setClientes(clientesAtualizados)
   }
 
-  function excluirCliente(idCliente) {
+  async function excluirCliente(idCliente) {
+    await deletarCliente(idCliente)
+
     const clientesAtualizados = clientes.filter((cliente) => {
       return cliente.id !== idCliente
     })
@@ -118,7 +179,9 @@ function App() {
     setClientes(clientesAtualizados)
   }
 
-  function marcarFiadoComoPago(idAtendimento) {
+  async function marcarFiadoComoPago(idAtendimento) {
+    await atualizarStatusAtendimento(idAtendimento, 'pago')
+
     const atendimentosAtualizados = atendimentos.map((atendimento) => {
       if (atendimento.id === idAtendimento) {
         return {
@@ -147,6 +210,43 @@ function App() {
     setBeneficiosUsados([novoBeneficio, ...beneficiosUsados])
   }
 
+  async function carregarProfile() {
+    try {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser()
+
+      if (userError || !user) {
+        console.error('Erro ao buscar usuário:', userError)
+        setProfile(null)
+        setBarbershopId(null)
+        return
+      }
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, name, role, barbershop_id')
+        .eq('id', user.id)
+        .single()
+
+      if (error || !data) {
+        console.error('Erro ao carregar profile:', error)
+        setProfile(null)
+        setBarbershopId(null)
+        return
+      }
+
+      setProfile(data)
+      setBarbershopId(data.barbershop_id)
+
+    } catch (error) {
+      console.error('Erro inesperado ao carregar profile:', error)
+      setProfile(null)
+      setBarbershopId(null)
+    }
+  }
+
   useEffect(() => {
     async function verificarSessao() {
       try {
@@ -158,7 +258,13 @@ function App() {
           return
         }
 
-        setLogado(!!data.session)
+        const existeSessao = !!data.session
+
+        setLogado(existeSessao)
+
+        if (existeSessao) {
+          await carregarProfile()
+        }
       } catch (error) {
         console.error('Erro inesperado ao verificar sessão:', error)
         setLogado(false)
@@ -181,6 +287,51 @@ function App() {
     }
   }, [])
 
+  useEffect(() => {
+    async function carregarClientes() {
+      if (!barbershopId) return
+
+      setCarregandoClientes(true)
+
+      const clientesDoBanco = await buscarClientes(barbershopId)
+
+      setClientes(clientesDoBanco)
+      setCarregandoClientes(false)
+    }
+
+    carregarClientes()
+  }, [barbershopId])
+
+  useEffect(() => {
+    async function carregarAtendimentos() {
+      if (!barbershopId) return
+
+      setCarregandoAtendimentos(true)
+
+      const atendimentosDoBanco = await buscarAtendimentos(barbershopId)
+
+      setAtendimentos(atendimentosDoBanco)
+      setCarregandoAtendimentos(false)
+    }
+
+    carregarAtendimentos()
+  }, [barbershopId])
+
+  useEffect(() => {
+    async function carregarSaidas() {
+      if (!barbershopId) return
+
+      setCarregandoSaidas(true)
+
+      const saidasDoBanco = await buscarSaidas(barbershopId)
+
+      setSaidas(saidasDoBanco)
+      setCarregandoSaidas(false)
+    }
+
+    carregarSaidas()
+  }, [barbershopId])
+
   if (carregandoLogin) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-zinc-950 text-white">
@@ -191,6 +342,14 @@ function App() {
 
   if (!logado) {
     return <Login setLogado={setLogado} />
+  }
+
+  if (logado && !barbershopId) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-zinc-950 text-white">
+        <p className="text-zinc-400">Carregando dados da barbearia...</p>
+      </div>
+    )
   }
 
   return (

@@ -40,6 +40,11 @@ import {
   criarSaida,
 } from './services/expensesService'
 
+import {
+  buscarBeneficiosUsados,
+  criarBeneficioUsado,
+} from './services/benefitsService'
+
 function App() {
   const [telaAtual, setTelaAtual] = useState('painel')
   const [logado, setLogado] = useState(false)
@@ -52,10 +57,8 @@ function App() {
   const [atendimentos, setAtendimentos] = useState([])
   const [carregandoAtendimentos, setCarregandoAtendimentos] = useState(false)
 
-  const [beneficiosUsados, setBeneficiosUsados] = useLocalStorage(
-    'barbercontrol_beneficios_usados',
-    beneficiosUsadosIniciais
-  )
+  const [beneficiosUsados, setBeneficiosUsados] = useState([])
+  const [carregandoBeneficios, setCarregandoBeneficios] = useState(false)
 
   const [clientes, setClientes] = useState([])
   const [carregandoClientes, setCarregandoClientes] = useState(false)
@@ -196,18 +199,25 @@ function App() {
     setAtendimentos(atendimentosAtualizados)
   }
 
-  function marcarBeneficioComoUsado(nomeCliente) {
-    const novoBeneficio = {
-      id: Date.now(),
-      cliente: nomeCliente,
-      dataUso: new Date().toLocaleDateString('pt-BR'),
-      horaUso: new Date().toLocaleTimeString('pt-BR', {
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
+  async function marcarBeneficioComoUsado(nomeCliente) {
+    const clienteEncontrado = clientes.find((cliente) => {
+      return cliente.nome.toLowerCase() === nomeCliente.toLowerCase()
+    })
+
+    if (!clienteEncontrado) {
+      alert('Cliente não encontrado.')
+      return
     }
 
-    setBeneficiosUsados([novoBeneficio, ...beneficiosUsados])
+    const novoBeneficio = await criarBeneficioUsado(
+      barbershopId,
+      clienteEncontrado
+    )
+
+    setBeneficiosUsados((beneficiosAtuais) => [
+      novoBeneficio,
+      ...beneficiosAtuais,
+    ])
   }
 
   async function carregarProfile() {
@@ -330,6 +340,21 @@ function App() {
     }
 
     carregarSaidas()
+  }, [barbershopId])
+
+  useEffect(() => {
+    async function carregarBeneficiosUsados() {
+      if (!barbershopId) return
+
+      setCarregandoBeneficios(true)
+
+      const beneficiosDoBanco = await buscarBeneficiosUsados(barbershopId)
+
+      setBeneficiosUsados(beneficiosDoBanco)
+      setCarregandoBeneficios(false)
+    }
+
+    carregarBeneficiosUsados()
   }, [barbershopId])
 
   if (carregandoLogin) {

@@ -1,11 +1,12 @@
 import { useState } from 'react'
+import { supabase } from '../services/supabaseClient'
 
 function Login({ setLogado }) {
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
   const [erro, setErro] = useState('')
 
-  function entrar(e) {
+  async function entrar(e) {
     e.preventDefault()
 
     if (!email.trim()) {
@@ -15,6 +16,16 @@ function Login({ setLogado }) {
 
     if (!senha.trim()) {
       setErro('Informe a senha para acessar.')
+      return
+    }
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password: senha,
+    })
+
+    if (error) {
+      setErro('E-mail ou senha inválidos.')
       return
     }
 
@@ -118,10 +129,9 @@ function Login({ setLogado }) {
             </button>
           </form>
 
-          <div className="mt-6 rounded-xl border border-yellow-900/40 bg-yellow-500/5 p-4">
-            <p className="text-sm text-yellow-300">
-              Login demonstrativo: por enquanto, qualquer e-mail e senha
-              preenchidos liberam o acesso.
+          <div className="mt-6 rounded-xl border border-zinc-800 bg-zinc-950 p-4">
+            <p className="text-sm text-zinc-400">
+              Acesso restrito ao responsável pela barbearia.
             </p>
           </div>
 

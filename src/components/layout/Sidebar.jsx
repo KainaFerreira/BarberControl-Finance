@@ -1,3 +1,5 @@
+import { supabase } from '../../services/supabaseClient'
+
 function Sidebar({ telaAtual, setTelaAtual, setLogado }) {
   function BotaoMenu({ nome, tela }) {
     const ativo = telaAtual === tela
@@ -16,6 +18,11 @@ function Sidebar({ telaAtual, setTelaAtual, setLogado }) {
     )
   }
 
+  async function sair() {
+  await supabase.auth.signOut()
+  setLogado(false)
+}
+
   return (
     <aside className="w-full border-b border-zinc-800 bg-zinc-950 p-4 lg:min-h-screen lg:w-72 lg:border-b-0 lg:border-r lg:p-6">
       <div className="mb-4 flex items-center justify-between gap-4 lg:mb-8 lg:block">
@@ -28,7 +35,7 @@ function Sidebar({ telaAtual, setTelaAtual, setLogado }) {
 
         {setLogado && (
           <button
-            onClick={() => setLogado(false)}
+            onClick={() => setLogado(sair)}
             className="rounded-xl border border-zinc-700 px-4 py-2 text-sm text-zinc-300 hover:border-red-600 hover:text-white lg:hidden"
           >
             Sair
@@ -51,7 +58,7 @@ function Sidebar({ telaAtual, setTelaAtual, setLogado }) {
 
       {setLogado && (
         <button
-          onClick={() => setLogado(false)}
+          onClick={() => setLogado(sair)}
           className="mt-8 hidden w-full rounded-xl border border-zinc-700 px-4 py-3 text-sm font-semibold text-zinc-300 hover:border-red-600 hover:text-white lg:block"
         >
           Sair

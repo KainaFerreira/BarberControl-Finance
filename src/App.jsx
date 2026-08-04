@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { supabase } from './services/supabaseClient'
+
 import Sidebar from './components/layout/Sidebar'
-import Dashboard from '../src/pages/Dashboard'
-import NewEntry from '../src/pages/NewEntry'
-import History from '../src/pages/History'
-import Clients from '../src/pages/Clients'
-import Loyalty from '../src/pages/Loyalty'
-import Debts from '../src/pages/Debts'
+import Dashboard from './pages/Dashboard'
+import NewEntry from './pages/NewEntry'
+import History from './pages/History'
+import Clients from './pages/Clients'
+import Loyalty from './pages/Loyalty'
+import Debts from './pages/Debts'
 import Login from './pages/Login'
 import Expenses from './pages/Expenses'
 import Finance from './pages/Finance'
@@ -23,6 +25,7 @@ import {
 function App() {
   const [telaAtual, setTelaAtual] = useState('painel')
   const [logado, setLogado] = useState(false)
+  const [carregandoLogin, setCarregandoLogin] = useState(true)
 
   const [atendimentos, setAtendimentos] = useLocalStorage(
     'barbercontrol_atendimentos',
@@ -87,6 +90,7 @@ function App() {
       }
 
       const clienteNaoTinhaCpf = !cliente.cpf || cliente.cpf.trim() === ''
+
       const clienteAgoraTemCpf =
         clienteAtualizado.cpf && clienteAtualizado.cpf.trim() !== ''
 
@@ -97,12 +101,15 @@ function App() {
         ...clienteAtualizado,
         dataInicioFidelidade: deveIniciarFidelidade
           ? new Date().toISOString()
-          : cliente.dataInicioFidelidade || clienteAtualizado.dataInicioFidelidade || null,
+          : cliente.dataInicioFidelidade ||
+            clienteAtualizado.dataInicioFidelidade ||
+            null,
       }
     })
 
     setClientes(clientesAtualizados)
   }
+
   function excluirCliente(idCliente) {
     const clientesAtualizados = clientes.filter((cliente) => {
       return cliente.id !== idCliente
@@ -138,6 +145,48 @@ function App() {
     }
 
     setBeneficiosUsados([novoBeneficio, ...beneficiosUsados])
+  }
+
+  useEffect(() => {
+    async function verificarSessao() {
+      try {
+        const { data, error } = await supabase.auth.getSession()
+
+        if (error) {
+          console.error('Erro ao verificar sessão:', error)
+          setLogado(false)
+          return
+        }
+
+        setLogado(!!data.session)
+      } catch (error) {
+        console.error('Erro inesperado ao verificar sessão:', error)
+        setLogado(false)
+      } finally {
+        setCarregandoLogin(false)
+      }
+    }
+
+    verificarSessao()
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setLogado(!!session)
+      setCarregandoLogin(false)
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [])
+
+  if (carregandoLogin) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-zinc-950 text-white">
+        <p className="text-zinc-400">Carregando sistema...</p>
+      </div>
+    )
   }
 
   if (!logado) {

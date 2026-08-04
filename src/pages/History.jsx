@@ -11,8 +11,8 @@ function History({ atendimentos }) {
         </p>
       </header>
 
-      <div className="rounded-2xl border border-red-900/40 bg-zinc-900 p-6">
-        <table className="w-full text-left">
+      <div className="overflow-x-auto rounded-2xl border border-red-900/40 bg-zinc-900 p-6">
+        <table className="min-w-full text-left">
           <thead className="text-sm text-zinc-400">
             <tr>
               <th className="pb-4">Data</th>

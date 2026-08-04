@@ -136,7 +136,7 @@ function Finance({ atendimentos, saidas }) {
                 </div>
             </section>
 
-            <section className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+            <section className="grid grid-cols-1 gap-6 2xl:grid-cols-3">
                 <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
                     <h3 className="mb-5 text-xl font-semibold">Entradas do mês</h3>
 
@@ -151,7 +151,7 @@ function Finance({ atendimentos, saidas }) {
                                     key={atendimento.id}
                                     className="rounded-xl border border-zinc-800 bg-zinc-950 p-5"
                                 >
-                                    <div className="flex items-start justify-between gap-4">
+                                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                                         <div>
                                             <h4 className="font-semibold">{atendimento.cliente}</h4>
                                             <p className="mt-1 text-sm text-zinc-500">
@@ -184,7 +184,7 @@ function Finance({ atendimentos, saidas }) {
                                     key={saida.id}
                                     className="rounded-xl border border-zinc-800 bg-zinc-950 p-5"
                                 >
-                                    <div className="flex items-start justify-between gap-4">
+                                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                                         <div>
                                             <h4 className="font-semibold">{saida.descricao}</h4>
                                             <p className="mt-1 text-sm text-zinc-500">
@@ -222,7 +222,7 @@ function Finance({ atendimentos, saidas }) {
                                     key={atendimento.id}
                                     className="rounded-xl border border-yellow-900/40 bg-zinc-950 p-5"
                                 >
-                                    <div className="flex items-start justify-between gap-4">
+                                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                                         <div>
                                             <h4 className="font-semibold">{atendimento.cliente}</h4>
 

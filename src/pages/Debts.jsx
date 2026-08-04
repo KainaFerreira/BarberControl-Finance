@@ -28,7 +28,7 @@ function Debts({ atendimentos, marcarFiadoComoPago }) {
                 key={fiado.id}
                 className="rounded-xl border border-zinc-800 bg-zinc-950 p-5"
               >
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div>
                     <h3 className="font-semibold">{fiado.cliente}</h3>
 

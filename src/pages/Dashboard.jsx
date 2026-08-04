@@ -84,7 +84,7 @@ function Dashboard({
 
   return (
     <>
-      <header className="mb-8 flex items-center justify-between">
+      <header className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
           <h2 className="text-3xl font-bold">Painel</h2>
           <p className="mt-1 text-zinc-400">
@@ -92,7 +92,7 @@ function Dashboard({
           </p>
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row">
           <button
             onClick={() => setMostrarValores(!mostrarValores)}
             className="rounded-xl border border-zinc-700 px-5 py-3 font-semibold text-zinc-300 hover:border-red-600 hover:text-white"

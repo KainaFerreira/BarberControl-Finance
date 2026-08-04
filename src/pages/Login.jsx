@@ -41,7 +41,7 @@ function Login({ setLogado }) {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
               <strong className="block text-2xl">100%</strong>
               <span className="text-sm text-zinc-400">focado no uso real</span>

@@ -146,14 +146,14 @@ function App() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white">
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen flex-col lg:flex-row">
         <Sidebar
           telaAtual={telaAtual}
           setTelaAtual={setTelaAtual}
           setLogado={setLogado}
         />
 
-        <main className="flex-1 p-8">
+        <main className="w-full flex-1 p-4 sm:p-6 lg:p-8">
           {telaAtual === 'painel' && (
             <Dashboard
               setTelaAtual={setTelaAtual}

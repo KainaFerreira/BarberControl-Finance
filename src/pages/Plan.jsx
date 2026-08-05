@@ -1,10 +1,10 @@
 function Plan() {
   const plano = {
-    nome: 'BarberControl MVP',
+    nome: 'Versão normal',
     status: 'Ativo',
-    valor: 30,
+    valor: 50,
     formaPagamento: 'Pix / Manual',
-    vencimento: '10 de cada mês',
+    vencimento: 'Dia 10/mês',
     recursos: [
       'Controle de atendimentos',
       'Histórico mensal',
